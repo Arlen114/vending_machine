@@ -11,6 +11,8 @@ public class AppRunner {
 
     private final CoinAcceptor coinAcceptor;
 
+    private final BillAcceptor billAcceptor = new BillAcceptor();
+
     private static boolean isExit = false;
 
     private AppRunner() {
@@ -60,9 +62,7 @@ public class AppRunner {
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
         if ("a".equalsIgnoreCase(action)) {
-            coinAcceptor.setAmount(coinAcceptor.getAmount() + 10);
-            print("Вы пополнили баланс на 10");
-            return;
+
         }
         try {
             for (int i = 0; i < products.size(); i++) {
@@ -80,9 +80,25 @@ public class AppRunner {
                 chooseAction(products);
             }
         }
-
-
     }
+
+    private void acceptBill(){
+        print("Введите номинал купюры (20, 50, 100, 200): ");
+        String billInput = fromConsole();
+        try {
+            int amout = Integer.parseInt(billInput);
+            if (billAcceptor.isValidBill(amout)){
+                coinAcceptor.setAmount(coinAcceptor.getAmount()+amout);
+                print("Балланс пополнен на " + amout);
+            }else {
+                print("Автомат не принимает такие купюры");
+            }
+        }catch (NumberFormatException nfe){
+            print("Ошибка: введите число.");
+        }
+    }
+
+
 
     private void showActions(UniversalArray<Product> products) {
         for (int i = 0; i < products.size(); i++) {
