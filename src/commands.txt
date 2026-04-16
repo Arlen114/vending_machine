@@ -1,0 +1,4 @@
+ git init
+cd vending_machine
+cd src
+echo commands.txt
